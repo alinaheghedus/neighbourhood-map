@@ -105,9 +105,9 @@ function initMap() {
       lat: 43.653321,
       lng: -79.384003
     },
-    zoom: 14
+    zoom: 35
   });
-  largeInfowindow = new google.maps.InfoWindow();
+  largeInfoWindow = new google.maps.InfoWindow();
   bounds = new google.maps.LatLngBounds();
   //call for our knockout view model
   ko.applyBindings(ViewAppModel());
@@ -115,7 +115,7 @@ function initMap() {
  
 // message when map doesn't load 
 function mapError() {
-  document.getElementById('map').innerHTML = "MAP FAILED TO LOAD";
+  document.getElementById('map').innerHTML = "Not Loading, try again later";
 };
 
 
@@ -165,10 +165,97 @@ let ViewAppModel = () => {
 	    return markerImage;
 	  };
 
-	  // default colour for marker
-	  var defaultIcon = makeMarkerIcon('d11aff');
-	  //when marker is clicked colour changes
-	  var highlightedIcon = makeMarkerIcon('6600ff');
+	  // default marker color
+	  var defaultColor = makeMarkerIcon('d11aff');
 
+	  // clicked marker color
+	  var clickedColor = makeMarkerIcon('6600ff');
+
+
+	  // create markers
+	  for (i = 0; i < locations.length; i++) {
+
+	    // Get info from the locations array.
+	    let position = locations[i].location;
+	    let title = locations[i].title;
+	    let address = locations[i].address;
+	    let id = locations[i].id;
+	    let li = locations[i].li;
+
+	    // Create each marker
+	    let marker = new google.maps.Marker({
+	      map: map,
+	      position: position,
+	      title: title,
+	      animation: google.maps.Animation.DROP,
+	      icon: defaultColor,
+	      id: id,
+	      li: ko.observable(li),
+	      address: address
+	    });
+
+	    // Put the markers in an array
+	    self.markers.push(marker);
+
+	    // Extend map's boundary
+	    bounds.extend(marker.position);
+
+	    // click event listener to open the infowindow
+	    // and change clicked marker's color
+	    marker.addListener('click', function() {
+	      populateInfoWindow(this, largeInfoWindow);
+	      bounds.extend(this.position);
+
+	      for (var i = 0; i < self.markers.length; i++) {
+	        if (self.markers[i].id != this.id) {
+	          self.markers[i].setIcon(defaultColor);
+	        } else {
+	          self.markers[i].setIcon(clickedColor);
+	        }
+	      }
+	    });	  
+	  }
+	  map.fitBounds(bounds);
+
+	  // filter the location list
+	  self.change = function(data, event) {
+	    for (var i = 0; i < self.markers.length; i++) {
+	      if (self.markers[i].title == data.title) {
+	        self.populateInfoWindow(markers[i], largeInfoWindow);
+	        markers[i].setIcon(clickedColor);
+	        bounds.extend(self.markers[i].position);
+	      } else {
+	        markers[i].setIcon(defaultColor);
+	      }
+	    }
+	  };
+
+	  self.mapError = function() {
+   		 document.getElementById('map').innerHTML = "Not loading, try again later";
+  	  };
+
+  	  self.test = function(viewModel, event) {
+	    if (selectedloc().length === 0) {
+	      for (var i = 0; i < self.markers.length; i++) {
+	        self.markers[i].setMap(map);
+	        self.markers[i].li(true);
+	        markers[i].setIcon(defaultColor);
+	        map.fitBounds(bounds);
+	      }
+	    } else {
+	      for (var j = 0; j < self.markers.length; j++) {
+	        if (self.markers[j].title.toLowerCase().indexOf(selectedloc().toLowerCase()) >= 0) {
+	          self.markers[j].setMap(map);
+	          self.markers[j].li(true);
+	          markers[j].setIcon(defaultColor);
+	        } else {
+	          self.markers[j].setMap(null);
+	          self.markers[j].li(false);
+	          markers[j].setIcon(defaultColor);
+	        }
+	      }
+	    }
+	    largeInfoWindow.close();
+	  };
 }
 
