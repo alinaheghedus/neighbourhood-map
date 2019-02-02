@@ -6,4 +6,12 @@
 	height: 500px; 
 	width: 600px;
 }
-     
+
+ul {
+	list-style-type: none;
+}
+ 
+li:hover {
+	background-color: yellow;
+	font-weight: bold;
+}  

@@ -70,6 +70,7 @@ locations = [
   }
 ];
 
+
 /* fetch the locations from foursquare api
 fetch('https://api.foursquare.com/v2/venues/explore?ll=43.653321,-79.384003&client_id=OGFWLIGUSRAL3E3YGMD1HTMLJP1SIRR4TIV1IHWGILDO2I1N&client_secret=YVZDERQD3UOAKRYN05SHLYODEIYXKSNXA2Q0RD0SNCX5QF4V&v=20180705')
 .then(response => response.json())
@@ -131,7 +132,7 @@ let ViewAppModel = () => {
 	self.markers = [];
 
 	// populates the infowindow when we click the marker
-	self.populateInfoWindow = (marker, infoWindow) => {
+	self.populateInfoWindow = (marker, infowindow) => {
 
 		// fetch extra info from foursquare
 		$.ajax({
@@ -139,14 +140,17 @@ let ViewAppModel = () => {
 	      dataType: "json",
 	      success: function(data) {
 	        var result = data.response.venue;
+	        console.log(result);
 	        marker.content = '<div>' + result.name + '</div>';
 	        marker.place = '<div>' + "latitude=" + result.location.lat + ",longitude=" + result.location.lng + '</div>';
-	        marker.address = '<div>' + "address=" + result.address + '</div>';
+	        marker.address = '<div>' + "address=" + result.location.address + '</div>';
+	        marker.description = '<div>' + "description=" + result.description + '</div>';
+
 
 	        // Check to see if the infowindow is not already opened on this marker.
 	        if (infowindow.marker != marker) {
 	          infowindow.marker = marker;
-	          infowindow.setContent('<div>' + marker.content + marker.place + marker.address + '</div>');
+	          infowindow.setContent('<div>' + marker.content + marker.place + marker.address + marker.description + '</div>');
 	          infowindow.open(map, marker);
 	          infowindow.addListener('closeclick', function() {
 	            infowindow.marker = null;
