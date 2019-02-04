@@ -43,4 +43,11 @@ li:hover {
 	font-weight: bold;
 }
 
+.description {
+	max-width: 300px;
+}
+
+.name {
+	font-size: 18px;
+}
 

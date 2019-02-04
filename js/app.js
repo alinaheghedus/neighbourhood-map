@@ -48,6 +48,27 @@ const locations = [
     address: "220 Yonge St",
     id: "4b2a6eb8f964a52012a924e3",
     li: true
+  },
+  {
+  	title: 'Bell Trinity Square',
+  	location: {lat: 43.65347479872822, lng: -79.38246987630343},
+  	address: "483 Bay St",
+  	id: "4ae5df5af964a520c4a221e3",
+  	li: true
+  },
+  {
+  	title: 'Canadian Opera Company',
+    location: {lat: 43.6506601893789, lng: -79.38624169559013},
+    address: "145 Queen St West",
+    id: "4ad4c062f964a520baf720e3",
+    li: true
+  },
+  {
+  	title: 'CF Toronto Eaton Centre',
+    location: {lat: 43.6541482917793, lng: -79.38063889404071},
+    address: "220 Yonge St",
+    id: "4ad77a12f964a520260b21e3",
+    li: true
   }
 ];
 
@@ -71,7 +92,7 @@ function initMap() {
 }
  
 // message when map doesn't load 
-function mapError() {
+let mapError = () => {
   document.getElementById('map').innerHTML = "Not Loading, try again later";
 };
 
@@ -97,10 +118,10 @@ let ViewAppModel = () => {
 	      success: function(data) {
 	        var result = data.response.venue;
 	        console.log(result);
-	        marker.content = '<div>' + result.name + '</div>';
-	        marker.place = '<div>' + "latitude=" + result.location.lat + ",longitude=" + result.location.lng + '</div>';
-	        marker.address = '<div>' + "address=" + result.location.address + '</div>';
-	        marker.description = '<div>' + "description=" + result.description + '</div>';
+	        marker.content = '<div class="name">' + result.name + '</div>';
+	        marker.place = '<div>' + "LAT = " + result.location.lat + ", LONG = " + result.location.lng + '</div>';
+	        marker.address = '<div>' + "ADDRESS = " + result.location.address + '</div>';
+	        marker.description = '<div class="description">' + "DESCRIPTION = " + result.description + '</div>';
 
 
 	        // make sure infowindow is not already open
@@ -122,17 +143,17 @@ let ViewAppModel = () => {
 
 	  // change the clicked marker color
 	  self.makeMarkerIcon = function(markerColor) {
-	    var markerImage = new google.maps.MarkerImage('http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + '|40|_|%E2%80%A2', new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34), new google.maps.Size(21, 34));
+	    let markerImage = new google.maps.MarkerImage('http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + '|40|_|%E2%80%A2', new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34), new google.maps.Size(21, 34));
 	    return markerImage;
 	  };
 
 
 	  // default marker color
-	  var defaultColor = makeMarkerIcon('d11aff');
+	  const defaultColor = makeMarkerIcon('d11aff');
 
 
 	  // clicked marker color
-	  var clickedColor = makeMarkerIcon('6600ff');
+	  const clickedColor = makeMarkerIcon('6600ff');
 
 
 	  // create the markers for the provided locations
@@ -163,12 +184,23 @@ let ViewAppModel = () => {
 	    // Extend map's boundary to catch all markers
 	    bounds.extend(marker.position);
 
-
+	    // function to animate marker
+	    let toggleBounce = () => {
+	    	if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          }
+        }
+	   	
 	    // click event listener to open the infowindow
 	    // and change clicked marker's color
 	    marker.addListener('click', function() {
 	      populateInfoWindow(this, largeInfoWindow);
 	      bounds.extend(this.position);
+
+	      // marker bounce effect on click
+	      toggleBounce();
 
 	      for (var i = 0; i < self.markers.length; i++) {
 	        if (self.markers[i].id != this.id) {
