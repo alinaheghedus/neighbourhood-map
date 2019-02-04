@@ -113,7 +113,7 @@ let ViewAppModel = () => {
 
 		// fetch extra info from foursquare api
 		$.ajax({
-	      url: "https://api.foursquare.com/v2/venues/" + marker.id + '?client_id=OGFWLIGUSRAL3E3YGMD1HTMLJP1SIRR4TIV1IHWGILDO2I1N&client_secret=YVZDERQD3UOAKRYN05SHLYODEIYXKSNXA2Q0RD0SNCX5QF4V&v=20180705',
+	      url: "https://api.foursquare.com/v2/venues/" + marker.id + '?client_id=4FAUYPRHNYTFGNWFK0OCEKJZLZQWK4CH0VZFGJI0Y3OFXWYA&client_secret=TFLXBM4ANRYZOG3XN2BZQN0EADEK20Y4W0LTP5Y2ACXLDM3R&v=20180705',
 	      dataType: "json",
 	      success: function(data) {
 	        var result = data.response.venue;
