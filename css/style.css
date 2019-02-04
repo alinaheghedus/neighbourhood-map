@@ -1,17 +1,46 @@
 
 
-
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #dcccff;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 18px;
+}
      
+.container {
+	width: 100%;
+}    
+
 #map { 
-	height: 500px; 
-	width: 600px;
+	height: 600px; 
+	width: 100%;
+}
+
+h3 {
+	font-size: 26px;
+	color: #47476b;
 }
 
 ul {
 	list-style-type: none;
+	padding-left: 0;
 }
  
+li {
+	color: #8585ad;
+} 
+
 li:hover {
-	background-color: yellow;
+	background-color: #ccccff;
+	color: #9933ff;
 	font-weight: bold;
 }  
+
+.infowindowContent {
+	background-color: #dcccff;;
+	font-weight: bold;
+}
+
+

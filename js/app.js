@@ -106,7 +106,7 @@ function initMap() {
       lat: 43.653321,
       lng: -79.384003
     },
-    zoom: 35
+    zoom: 20
   });
   largeInfoWindow = new google.maps.InfoWindow();
   bounds = new google.maps.LatLngBounds();
@@ -150,7 +150,7 @@ let ViewAppModel = () => {
 	        // Check to see if the infowindow is not already opened on this marker.
 	        if (infowindow.marker != marker) {
 	          infowindow.marker = marker;
-	          infowindow.setContent('<div>' + marker.content + marker.place + marker.address + marker.description + '</div>');
+	          infowindow.setContent('<div class="infowindowContent">' + marker.content + marker.place + marker.address + marker.description + '</div>');
 	          infowindow.open(map, marker);
 	          infowindow.addListener('closeclick', function() {
 	            infowindow.marker = null;
