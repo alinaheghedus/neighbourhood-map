@@ -6,7 +6,6 @@ html, body {
     padding: 0;
     background-color: #dcccff;
     font-family: 'Josefin Sans', sans-serif;
-    font-size: 18px;
 }
      
 .container {
@@ -19,7 +18,7 @@ html, body {
 }
 
 h3 {
-	font-size: 26px;
+	font-size: 20px;
 	color: #47476b;
 }
 
@@ -30,6 +29,7 @@ ul {
  
 li {
 	color: #8585ad;
+	font-size: 14px;
 } 
 
 li:hover {
