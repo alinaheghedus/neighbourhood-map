@@ -39,15 +39,20 @@ li:hover {
 }  
 
 .infowindowContent {
-	background-color: #dcccff;;
-	font-weight: bold;
+	background-color: #dcccff;
 }
 
 .description {
-	max-width: 300px;
+	max-width: 200px;
 }
 
 .name {
-	font-size: 18px;
+	font-size: 28px;
+	font-weight: 400;
 }
+
+input {
+	width: 100%;
+}
+
 

@@ -118,16 +118,22 @@ let ViewAppModel = () => {
 	      success: function(data) {
 	        var result = data.response.venue;
 	        console.log(result);
-	        marker.content = '<div class="name">' + result.name + '</div>';
-	        marker.place = '<div>' + "LAT = " + result.location.lat + ", LONG = " + result.location.lng + '</div>';
-	        marker.address = '<div>' + "ADDRESS = " + result.location.address + '</div>';
-	        marker.description = '<div class="description">' + "DESCRIPTION = " + result.description + '</div>';
-
+	        if(result.location.address === undefined) {
+	        	result.location.address = "Foursquare content not available";
+	        }
+	        if(result.description === undefined) {
+	        	result.description = "Foursquare content not available";
+	        }
+	        marker.content = '<div class="name"><strong>' + result.name + '</strong></div>';
+	        marker.place = '<div>' + "LAT: " + result.location.lat.toFixed(4) + ", LONG: " + result.location.lng.toFixed(4) + '</div>';
+	        marker.address = '<div>' + "ADDRESS: " + result.location.address + '</div>';
+	        marker.description = '<div class="description">' + "DESCRIPTION: " + result.description + '</div>';
+	        marker.photo = "<img src='" + result.bestPhoto["prefix"] + "height100" + result.bestPhoto["suffix"] + " ' ";
 
 	        // make sure infowindow is not already open
 	        if (infowindow.marker != marker) {
 	          infowindow.marker = marker;
-	          infowindow.setContent('<div class="infowindowContent">' + marker.content + marker.place + marker.address + marker.description + '</div>');
+	          infowindow.setContent('<div class="infowindowContent">' + marker.photo + marker.content + marker.place + marker.address + marker.description + '</div>');
 	          infowindow.open(map, marker);
 	          infowindow.addListener('closeclick', function() {
 	            infowindow.marker = null;
@@ -231,6 +237,9 @@ let ViewAppModel = () => {
    		 document.getElementById('map').innerHTML = "Not loading, try again later";
   	  };
 
+  	  // test the filtered list 
+  	  // if nothing was filtered, display all the markers
+  	  // else display only the markers for the filtered locations
   	  self.test = function(viewModel, event) {
 	    if (selectedloc().length === 0) {
 	      for (var i = 0; i < self.markers.length; i++) {
